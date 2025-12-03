@@ -6,6 +6,7 @@ public class ModeSelector : MonoBehaviour
     private MonoBehaviour[] mode1Scripts;
     private MonoBehaviour[] mode2Scripts;
     private MonoBehaviour[] mode3Scripts;
+    private MonoBehaviour[] mode4Scripts;
 
     void Awake()
     {
@@ -14,12 +15,14 @@ public class ModeSelector : MonoBehaviour
         mode1Scripts = FindObjectsOfType<TilePlusRemover>(true);
         mode2Scripts = FindObjectsOfType<Tile2DownRemover>(true);
         mode3Scripts = FindObjectsOfType<TileRemoverHammer>(true);
+        mode4Scripts = FindObjectsOfType<TileRemoverShovel>(true);
 
         Debug.Log("Auto-detected scripts:");
         Debug.Log("Mode0 count: " + mode0Scripts.Length);
         Debug.Log("Mode1 count: " + mode1Scripts.Length);
         Debug.Log("Mode2 count: " + mode2Scripts.Length);
         Debug.Log("Mode3 count: " + mode3Scripts.Length);
+        Debug.Log("Mode4 count: " + mode4Scripts.Length);
 
         // Default starting mode
         SetMode(0);
@@ -31,6 +34,7 @@ public class ModeSelector : MonoBehaviour
         EnableArray(mode1Scripts, index == 1);
         EnableArray(mode2Scripts, index == 2);
         EnableArray(mode3Scripts, index == 3);
+        EnableArray(mode4Scripts, index == 4);
 
         Debug.Log("Switched to delete mode: " + index);
     }
