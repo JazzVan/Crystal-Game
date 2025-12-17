@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Linq;
 
-public class TileRemoverShovel : MonoBehaviour
+public class TileRemoverShovel : ToolWithDurability
 {
     private Camera mainCamera;
 
@@ -13,10 +13,12 @@ public class TileRemoverShovel : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !isBroken)
         {
             Vector2 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
             Mine2x2x2(mouseWorldPos);
+
+            ConsumeUse();
         }
     }
 

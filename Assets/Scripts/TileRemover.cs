@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class TileRemover : MonoBehaviour
+public class TileRemover : ToolWithDurability
 {
     private Camera mainCamera;
 
@@ -12,7 +12,7 @@ public class TileRemover : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !isBroken)
         {
             Vector2 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
@@ -48,6 +48,8 @@ public class TileRemover : MonoBehaviour
                     }
                 }
             }
+
+            ConsumeUse();
         }
     }
 }

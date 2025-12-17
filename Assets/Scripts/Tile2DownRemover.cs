@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Linq;
 
-public class Tile2DownRemover : MonoBehaviour
+public class Tile2DownRemover : ToolWithDurability
 {
     private Camera mainCamera;
 
@@ -13,7 +13,7 @@ public class Tile2DownRemover : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !isBroken)
         {
             Vector2 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
@@ -50,6 +50,8 @@ public class Tile2DownRemover : MonoBehaviour
                 Vector3Int underCell = under.Tilemap.WorldToCell(mouseWorldPos);
                 under.Tilemap.SetTile(underCell, null);
             }
+
+            ConsumeUse();
         }
     }
 }

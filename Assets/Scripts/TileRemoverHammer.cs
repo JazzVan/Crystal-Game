@@ -2,7 +2,7 @@
 using UnityEngine.Tilemaps;
 using System.Linq;
 
-public class TileRemoverHammer : MonoBehaviour
+public class TileRemoverHammer : ToolWithDurability
 {
     private Camera mainCamera;
 
@@ -13,10 +13,12 @@ public class TileRemoverHammer : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !isBroken)
         {
             Vector2 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
             Mine3x3x3(mouseWorldPos);
+
+            ConsumeUse();
         }
     }
 
