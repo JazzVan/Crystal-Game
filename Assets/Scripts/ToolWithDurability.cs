@@ -3,15 +3,27 @@ using UnityEngine;
 public abstract class ToolWithDurability : MonoBehaviour
 {
     [SerializeField] protected int maxUses = 5;
+
     protected int currentUses;
-
-    protected virtual void Awake()
-    {
-        currentUses = maxUses;
-        ToolDurabilityManager.Instance.RegisterTool();
-    }
-
     protected bool isBroken = false;
+    private bool initialized = false;
+
+    protected virtual void Start()
+    {
+        if (initialized) return;
+
+        initialized = true;
+        currentUses = maxUses;
+
+        if (ToolDurabilityManager.Instance != null)
+        {
+            ToolDurabilityManager.Instance.RegisterTool();
+        }
+        else
+        {
+            Debug.LogError("ToolDurabilityManager not found in scene!");
+        }
+    }
 
     protected bool CanUseTool()
     {
@@ -28,14 +40,14 @@ public abstract class ToolWithDurability : MonoBehaviour
         {
             isBroken = true;
             DisableTool();
-            ToolDurabilityManager.Instance.NotifyToolBroken();
+
+            ToolDurabilityManager.Instance?.NotifyToolBroken();
         }
     }
-
 
     protected virtual void DisableTool()
     {
         Debug.Log($"{gameObject.name} is broken!");
-        enabled = false; // disables THIS script
+        enabled = false;
     }
 }

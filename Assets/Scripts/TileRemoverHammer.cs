@@ -8,6 +8,7 @@ public class TileRemoverHammer : ToolWithDurability
 
     void Start()
     {
+        base.Start();
         mainCamera = Camera.main;
     }
 

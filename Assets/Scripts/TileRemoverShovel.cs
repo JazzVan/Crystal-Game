@@ -8,6 +8,7 @@ public class TileRemoverShovel : ToolWithDurability
 
     void Start()
     {
+        base.Start();
         mainCamera = Camera.main;
     }
 

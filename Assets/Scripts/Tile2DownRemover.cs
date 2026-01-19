@@ -8,6 +8,7 @@ public class Tile2DownRemover : ToolWithDurability
 
     void Start()
     {
+        base.Start();
         mainCamera = Camera.main;
     }
 

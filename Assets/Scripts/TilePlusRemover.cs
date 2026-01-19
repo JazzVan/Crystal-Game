@@ -8,6 +8,7 @@ public class TilePlusRemover : ToolWithDurability
 
     void Start()
     {
+        base.Start();
         mainCamera = Camera.main;
     }
 
