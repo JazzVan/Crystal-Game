@@ -3066,6 +3066,7 @@ GameObject:
   - component: {fileID: 250259777}
   - component: {fileID: 250259776}
   - component: {fileID: 250259779}
+  - component: {fileID: 250259780}
   m_Layer: 5
   m_Name: Item 3
   m_TagString: Untagged
@@ -3201,6 +3202,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toolType: 2
+--- !u!114 &250259780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 250259774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de4470fc1ec064e40b28d7fb42b38622, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toolType: 2
+  brokenColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!4 &348053751 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2764393491416738734, guid: 45edd5291c43f124d809fdfc0ee397e4, type: 3}
@@ -21926,6 +21941,7 @@ GameObject:
   - component: {fileID: 1458380081}
   - component: {fileID: 1458380080}
   - component: {fileID: 1458380083}
+  - component: {fileID: 1458380084}
   m_Layer: 5
   m_Name: Item 1
   m_TagString: Untagged
@@ -22061,6 +22077,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toolType: 0
+--- !u!114 &1458380084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1458380078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de4470fc1ec064e40b28d7fb42b38622, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toolType: 0
+  brokenColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &1471992728
 GameObject:
   m_ObjectHideFlags: 0
@@ -22074,6 +22104,7 @@ GameObject:
   - component: {fileID: 1471992731}
   - component: {fileID: 1471992730}
   - component: {fileID: 1471992733}
+  - component: {fileID: 1471992734}
   m_Layer: 5
   m_Name: Item 2
   m_TagString: Untagged
@@ -22209,6 +22240,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toolType: 1
+--- !u!114 &1471992734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471992728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de4470fc1ec064e40b28d7fb42b38622, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toolType: 1
+  brokenColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1001 &1528452836
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32514,6 +32559,7 @@ GameObject:
   - component: {fileID: 1792514490}
   - component: {fileID: 1792514489}
   - component: {fileID: 1792514492}
+  - component: {fileID: 1792514493}
   m_Layer: 5
   m_Name: Item 4
   m_TagString: Untagged
@@ -32649,6 +32695,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toolType: 3
+--- !u!114 &1792514493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1792514487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de4470fc1ec064e40b28d7fb42b38622, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toolType: 3
+  brokenColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &1809553531
 GameObject:
   m_ObjectHideFlags: 0
@@ -35451,6 +35511,7 @@ GameObject:
   - component: {fileID: 1975151810}
   - component: {fileID: 1975151809}
   - component: {fileID: 1975151812}
+  - component: {fileID: 1975151813}
   m_Layer: 5
   m_Name: Item 5
   m_TagString: Untagged
@@ -35586,6 +35647,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toolType: 4
+--- !u!114 &1975151813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1975151807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de4470fc1ec064e40b28d7fb42b38622, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toolType: 4
+  brokenColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!4 &1992074488 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6904969039105106962, guid: 52b1811799cd80643bce8561005dc234, type: 3}

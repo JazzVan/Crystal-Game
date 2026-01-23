@@ -25,6 +25,9 @@ public class TileInteraction : MonoBehaviour
         if (!Input.GetMouseButtonDown(0))
             return;
 
+        if (!ToolManager.Instance.CanUseActiveTool())
+            return;
+
         Vector2 mouseWorldPos = cam.ScreenToWorldPoint(Input.mousePosition);
 
         bool removedSomething = false;
@@ -49,12 +52,12 @@ public class TileInteraction : MonoBehaviour
                 break;
         }
 
-        // Only consume durability if we actually removed tiles
         if (removedSomething)
         {
-            ToolManager.Instance.TryUseActiveTool();
+            ToolManager.Instance.ConsumeActiveToolUse();
         }
     }
+
 
     // ---------------- RAYCAST HELPERS ----------------
 

@@ -19,22 +19,34 @@ public class ToolManager : MonoBehaviour
             tool.Init();
     }
 
-    public bool TryUseActiveTool()
+    public bool CanUseActiveTool()
     {
         ToolData tool = tools.Find(t => t.toolType == activeTool);
+        return tool != null && !tool.isBroken;
+    }
 
+    public void ConsumeActiveToolUse()
+    {
+        ToolData tool = GetToolData(activeTool);
         if (tool == null || tool.isBroken)
-            return false;
+            return;
 
         tool.Use();
+
+        Debug.Log($"{activeTool} uses left: {tool.currentUses}");
+
+        if (tool.isBroken)
+        {
+            Debug.Log($"{activeTool} BROKEN");
+        }
 
         if (AllToolsBroken())
         {
             QuitGame();
         }
-
-        return true;
     }
+
+
 
     public bool IsToolBroken(ToolType type)
     {
@@ -46,6 +58,11 @@ public class ToolManager : MonoBehaviour
         if (!IsToolBroken(type))
             activeTool = type;
         Debug.Log("Tool Selected: " + type);
+    }
+
+    public ToolData GetToolData(ToolType type)
+    {
+        return tools.Find(t => t.toolType == type);
     }
 
     bool AllToolsBroken()
