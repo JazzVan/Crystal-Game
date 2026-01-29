@@ -41,10 +41,6 @@ public class TileInteraction : MonoBehaviour
                 removedSomething = RemoveTopTile(mouseWorldPos);
                 break;
 
-            case ToolType.PrecisionMiningLaser:
-                removedSomething = RemoveLaser(mouseWorldPos);
-                break;
-
             case ToolType.Hammer:
                 removedSomething = RemoveHammer(mouseWorldPos);
                 break;
@@ -55,6 +51,10 @@ public class TileInteraction : MonoBehaviour
 
             case ToolType.HighPressureHose:
                 removedSomething = Remove2Down(mouseWorldPos);
+                break;
+
+            case ToolType.PrecisionMiningLaser:
+                removedSomething = RemoveLaser(mouseWorldPos);
                 break;
         }
 
