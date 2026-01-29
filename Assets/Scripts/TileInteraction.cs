@@ -14,6 +14,9 @@ class TileHit
 public class TileInteraction : MonoBehaviour
 {
     private Camera cam;
+    public TileBase[] gemTiles;
+
+
 
     void Start()
     {
@@ -35,16 +38,19 @@ public class TileInteraction : MonoBehaviour
         switch (ToolManager.Instance.activeTool)
         {
             case ToolType.Pickaxe:
-            case ToolType.PrecisionMiningLaser:
                 removedSomething = RemoveTopTile(mouseWorldPos);
                 break;
 
+            case ToolType.PrecisionMiningLaser:
+                removedSomething = RemoveLaser(mouseWorldPos);
+                break;
+
             case ToolType.Hammer:
-                removedSomething = RemovePlus(mouseWorldPos);
+                removedSomething = RemoveHammer(mouseWorldPos);
                 break;
 
             case ToolType.Shovel:
-                removedSomething = Remove2x2Top2(mouseWorldPos);
+                removedSomething = RemoveShovel(mouseWorldPos);
                 break;
 
             case ToolType.HighPressureHose:
@@ -105,49 +111,118 @@ public class TileInteraction : MonoBehaviour
         return true;
     }
 
-    bool RemovePlus(Vector2 center)
+    bool RemoveTopNLayers(Vector2 pos, int layers)
     {
-        Vector2[] offsets =
-        {
-            Vector2.zero,
-            Vector2.right,
-            Vector2.left,
-            Vector2.up,
-            Vector2.down
-        };
+        var hits = GetOrderedHits(pos);
+        if (hits.Count == 0)
+            return false;
 
         bool removed = false;
 
-        foreach (var offset in offsets)
+        for (int i = 0; i < layers && i < hits.Count; i++)
         {
-            removed |= RemoveTopTile(center + offset);
+            RemoveTile(hits[i].Tilemap, pos);
+            removed = true;
         }
 
         return removed;
     }
 
-    bool Remove2x2Top2(Vector2 center)
-    {
-        Vector2[] offsets =
-        {
-            new Vector2(0, 0), new Vector2(1, 0),
-            new Vector2(0, 1), new Vector2(1, 1)
-        };
 
+    bool RemoveHammer(Vector2 center)
+    {
         bool removed = false;
 
-        foreach (var offset in offsets)
+        int r = Random.Range(3, 6); // 3, 4, or 5 (int)
+
+        // 3x3 area centered on click
+        for (int x = -1; x <= 1; x++)
         {
-            removed |= Remove2Down(center + offset);
+            for (int y = -1; y <= 1; y++)
+            {
+                Vector2 pos = center + new Vector2(x, y);
+                removed |= RemoveTopNLayers(pos, r);
+            }
         }
 
         return removed;
     }
+
+
+    bool RemoveShovel(Vector2 center)
+    {
+        bool removed = false;
+
+        // Random layers: 2 to 4 (inclusive)
+        int layers = Random.Range(2, 5);
+
+        Vector2[] offsets =
+        {
+        new Vector2(0, 0), new Vector2(1, 0),
+        new Vector2(0, 1), new Vector2(1, 1)
+        };
+
+        foreach (var offset in offsets)
+        {
+            removed |= RemoveTopNLayers(center + offset, layers);
+        }
+
+        return removed;
+    }
+
+    bool RemoveLaser(Vector2 pos)
+    {
+        var hits = GetOrderedHits(pos);
+        if (hits.Count == 0)
+            return false;
+
+        bool removedSomething = false;
+
+        foreach (var hit in hits)
+        {
+            Tilemap tilemap = hit.Tilemap;
+            Vector3Int cell = tilemap.WorldToCell(pos);
+
+            TileBase tile = tilemap.GetTile(cell);
+            if (tile == null)
+                continue;
+
+            // Remove the tile
+            removedSomething = true;
+
+            // If it's a gem, remove it and STOP
+            if (gemTiles.Contains(tile))
+            {
+                GemCounter.Instance.AddGem(1);
+                tilemap.SetTile(cell, null);
+                break;
+            }
+
+            tilemap.SetTile(cell, null);
+        }
+
+        return removedSomething;
+    }
+
+
 
     void RemoveTile(Tilemap tilemap, Vector2 worldPos)
     {
         Vector3Int cell = tilemap.WorldToCell(worldPos);
-        if (tilemap.HasTile(cell))
-            tilemap.SetTile(cell, null);
+
+        TileBase tile = tilemap.GetTile(cell);
+        Debug.Log($"Removed tile: {tile.name}");
+
+        if (tile == null)
+            return;
+
+        if (gemTiles.Contains(tile))
+        {
+            GemCounter.Instance.AddGem(1);
+        }
+
+
+        tilemap.SetTile(cell, null);
     }
+
 }
