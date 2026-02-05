@@ -15,6 +15,7 @@ public class TileInteraction : MonoBehaviour
 {
     private Camera cam;
     public TileBase[] gemTiles;
+    public GemData[] gemDefinitions;
 
 
 
@@ -193,7 +194,12 @@ public class TileInteraction : MonoBehaviour
             // If it's a gem, remove it and STOP
             if (gemTiles.Contains(tile))
             {
-                GemCounter.Instance.AddGem(1);
+                GemData gem = gemDefinitions.FirstOrDefault(g => g.tile == tile);
+
+                if (gem != null)
+                {
+                    GemInventory.Instance.AddGem(gem.gemType);
+                }
                 tilemap.SetTile(cell, null);
                 break;
             }
@@ -216,10 +222,13 @@ public class TileInteraction : MonoBehaviour
         if (tile == null)
             return;
 
-        if (gemTiles.Contains(tile))
+        GemData gem = gemDefinitions.FirstOrDefault(g => g.tile == tile);
+
+        if (gem != null)
         {
-            GemCounter.Instance.AddGem(1);
+            GemInventory.Instance.AddGem(gem.gemType);
         }
+
 
 
         tilemap.SetTile(cell, null);

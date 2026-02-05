@@ -1,25 +1,55 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Collections.Generic;
 
 public class GemPlacer : MonoBehaviour
 {
     public Tilemap[] tilemaps;
-    public TileBase gemTile;
+
+    [Header("Gem Definitions")]
+    public GemData[] gemDefinitions;
+
+    [Header("Spawn Settings")]
+    [Range(0, 10)]
+    public int minGemsPerLayer = 0;
+
+    [Range(1, 5)]
+    public int maxGemsPerLayer = 3;
 
     void Start()
     {
         foreach (Tilemap tilemap in tilemaps)
         {
-            PlaceGem(tilemap);
+            PlaceGemsOnTilemap(tilemap);
         }
     }
 
-    void PlaceGem(Tilemap tilemap)
+    GemData GetRandomGemByWeight()
+    {
+        int totalWeight = 0;
+
+        foreach (var gem in gemDefinitions)
+            totalWeight += gem.weight;
+
+        int roll = Random.Range(0, totalWeight);
+
+        foreach (var gem in gemDefinitions)
+        {
+            roll -= gem.weight;
+            if (roll < 0)
+                return gem;
+        }
+
+        // Fallback (should never happen)
+        return gemDefinitions[0];
+    }
+
+
+    void PlaceGemsOnTilemap(Tilemap tilemap)
     {
         BoundsInt bounds = tilemap.cellBounds;
 
-        // Collect all valid dirt cells
-        var validCells = new System.Collections.Generic.List<Vector3Int>();
+        List<Vector3Int> validCells = new List<Vector3Int>();
 
         foreach (Vector3Int pos in bounds.allPositionsWithin)
         {
@@ -32,10 +62,22 @@ public class GemPlacer : MonoBehaviour
         if (validCells.Count == 0)
             return;
 
-        // Pick one random cell
-        Vector3Int chosenCell =
-            validCells[Random.Range(0, validCells.Count)];
+        int gemsToPlace = Random.Range(minGemsPerLayer, maxGemsPerLayer + 1);
 
-        tilemap.SetTile(chosenCell, gemTile);
+        gemsToPlace = Mathf.Min(gemsToPlace, validCells.Count);
+
+        for (int i = 0; i < gemsToPlace; i++)
+        {
+            // Pick a random cell (no duplicates)
+            int cellIndex = Random.Range(0, validCells.Count);
+            Vector3Int cell = validCells[cellIndex];
+            validCells.RemoveAt(cellIndex);
+
+            // Pick a random gem type
+            GemData gem = GetRandomGemByWeight();
+
+
+            tilemap.SetTile(cell, gem.tile);
+        }
     }
 }

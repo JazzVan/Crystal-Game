@@ -77,6 +77,10 @@ public class ToolManager : MonoBehaviour
 
     void QuitGame()
     {
+        foreach (var entry in GemInventory.Instance.GetAllGems())
+        {
+            Debug.Log($"{entry.Key}: {entry.Value}");
+        }
         Debug.Log("All tools broken. Quitting game.");
 
 #if UNITY_EDITOR

@@ -7,6 +7,6 @@ public class GemCounterUI : MonoBehaviour
 
     void Update()
     {
-        text.text = $"Gems: {GemCounter.Instance.gemsCollected}";
+        text.text = $"Gems: {GemInventory.Instance.totalGems}";
     }
 }
