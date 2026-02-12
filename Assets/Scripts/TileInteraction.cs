@@ -26,6 +26,9 @@ public class TileInteraction : MonoBehaviour
 
     void Update()
     {
+        if (CaveInManager.Instance != null && CaveInManager.Instance.GameOver)
+            return;
+
         if (!Input.GetMouseButtonDown(0))
             return;
 
@@ -62,6 +65,19 @@ public class TileInteraction : MonoBehaviour
         if (removedSomething)
         {
             ToolManager.Instance.ConsumeActiveToolUse();
+        }
+    }
+
+    bool ToolTriggersHazzard()
+    {
+        switch (ToolManager.Instance.activeTool)
+        {
+            case ToolType.HighPressureHose:
+            case ToolType.PrecisionMiningLaser:
+                return false;
+
+            default:
+                return true;
         }
     }
 
@@ -191,6 +207,22 @@ public class TileInteraction : MonoBehaviour
             // Remove the tile
             removedSomething = true;
 
+            // HAZARD CHECK FIRST
+            if (tile is HazzardData hazzard)
+            {
+                if (ToolTriggersHazzard())
+                {
+                    CaveInManager.Instance.HitFracture(hazzard.caveInDamage);
+                }
+
+                if (hazzard.destroyOnHit)
+                {
+                    tilemap.SetTile(cell, null);
+                }
+
+                break; // Laser stops at any hazard
+            }
+
             // If it's a gem, remove it and STOP
             if (gemTiles.Contains(tile))
             {
@@ -217,21 +249,38 @@ public class TileInteraction : MonoBehaviour
         Vector3Int cell = tilemap.WorldToCell(worldPos);
 
         TileBase tile = tilemap.GetTile(cell);
-        Debug.Log($"Removed tile: {tile.name}");
-
         if (tile == null)
             return;
 
-        GemData gem = gemDefinitions.FirstOrDefault(g => g.tile == tile);
+        // --- GEM CHECK ---
+        GemData gem = gemDefinitions
+            .FirstOrDefault(g => g.tile == tile);
 
         if (gem != null)
         {
             GemInventory.Instance.AddGem(gem.gemType);
         }
 
+        // --- HAZARD CHECK ---
+        if (tile is HazzardData hazzard)
+        {
+            if (ToolTriggersHazzard())
+            {
+                CaveInManager.Instance.HitFracture(hazzard.caveInDamage);
+
+                if (hazzard.destroyOnHit)
+                {
+                    tilemap.SetTile(cell, null);
+                }
+
+                return; // stop further processing
+            }
+        }
 
 
         tilemap.SetTile(cell, null);
     }
+
+
 
 }
