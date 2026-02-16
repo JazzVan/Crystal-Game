@@ -1,4 +1,10 @@
 using UnityEngine;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+
 
 public class CaveInManager : MonoBehaviour
 {
@@ -10,9 +16,10 @@ public class CaveInManager : MonoBehaviour
     private int currentThreshold;
 
     [Header("UI")]
-    public GameObject caveInPanel;   // Drag your UI panel here
+    public GameObject gameOverPanel;
+    public TextMeshProUGUI gemSummaryText;
 
-    public bool GameOver { get; private set; }  // <- NEW
+    public bool GameOver { get; private set; }
 
     void Awake()
     {
@@ -21,11 +28,17 @@ public class CaveInManager : MonoBehaviour
         else
             Destroy(gameObject);
 
+        ResetThreshold();
+
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(false);
+    }
+
+    void ResetThreshold()
+    {
         currentThreshold = startingThreshold;
         GameOver = false;
-
-        if (caveInPanel != null)
-            caveInPanel.SetActive(false);
+        Time.timeScale = 1f;
     }
 
     public void HitFracture(int damage)
@@ -34,8 +47,6 @@ public class CaveInManager : MonoBehaviour
             return;
 
         currentThreshold -= damage;
-
-        Debug.Log($"Cave stability: {currentThreshold}");
 
         if (currentThreshold <= 0)
         {
@@ -46,17 +57,32 @@ public class CaveInManager : MonoBehaviour
 
     void TriggerCaveIn()
     {
-        Debug.Log("CAVE IN!");
-
         GameOver = true;
 
-        // Pause game
         Time.timeScale = 0f;
 
-        // Show UI
-        if (caveInPanel != null)
-            caveInPanel.SetActive(true);
+        ShowGemSummary();
+
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(true);
     }
+
+    void ShowGemSummary()
+    {
+        if (gemSummaryText == null)
+            return;
+
+        var summary = GemInventory.Instance.GetGemSummary();
+
+        gemSummaryText.text = summary;
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
 
     public int GetCurrentThreshold()
     {

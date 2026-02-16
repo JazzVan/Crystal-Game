@@ -41,4 +41,21 @@ public class GemInventory : MonoBehaviour
     {
         return collectedGems;
     }
+
+    public string GetGemSummary()
+    {
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+        foreach (var kvp in collectedGems)
+        {
+            sb.AppendLine($"{kvp.Key}: {kvp.Value}");
+        }
+
+        return sb.ToString();
+    }
+
+    public void ResetInventory()
+    {
+        collectedGems.Clear();
+    }
 }

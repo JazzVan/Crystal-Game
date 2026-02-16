@@ -35,12 +35,30 @@ public class LevelInitiator : MonoBehaviour
     [Range(0, 5)]
     public int maxPressurePerLayer = 1;
 
+    public static LevelInitiator Instance;
 
+    void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {
         foreach (Tilemap tilemap in tilemaps)
         {
+            SpawnGemsAndHazzards(tilemap);
+        }
+    }
+
+    public void RegenerateLevel()
+    {
+        foreach (Tilemap tilemap in tilemaps)
+        {
+            tilemap.ClearAllTiles();
+
+            // If you originally had a base sediment tile,
+            // you must refill it here before spawning gems/hazards
+
             SpawnGemsAndHazzards(tilemap);
         }
     }
