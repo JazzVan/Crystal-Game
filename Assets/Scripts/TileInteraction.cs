@@ -17,8 +17,6 @@ public class TileInteraction : MonoBehaviour
     public TileBase[] gemTiles;
     public GemData[] gemDefinitions;
 
-
-
     void Start()
     {
         cam = Camera.main;
@@ -26,6 +24,9 @@ public class TileInteraction : MonoBehaviour
 
     void Update()
     {
+        if (CaveInManager.Instance.GameOver)
+            return;
+
         if (CaveInManager.Instance != null && CaveInManager.Instance.GameOver)
             return;
 

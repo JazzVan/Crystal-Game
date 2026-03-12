@@ -4,6 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+public enum GameOverReason
+{
+    CaveIn,
+    OutOfTools
+}
 
 
 public class CaveInManager : MonoBehaviour
@@ -16,6 +21,7 @@ public class CaveInManager : MonoBehaviour
     private int currentThreshold;
 
     [Header("UI")]
+    public TextMeshProUGUI gameOverReasonText;
     public GameObject gameOverPanel;
     public TextMeshProUGUI gemSummaryText;
 
@@ -55,8 +61,11 @@ public class CaveInManager : MonoBehaviour
         }
     }
 
-    void TriggerCaveIn()
+    public void TriggerGameOver()
     {
+        if (GameOver)
+            return;
+
         GameOver = true;
 
         Time.timeScale = 0f;
@@ -67,6 +76,29 @@ public class CaveInManager : MonoBehaviour
             gameOverPanel.SetActive(true);
     }
 
+    public void TriggerGameOver(GameOverReason reason)
+    {
+        if (GameOver)
+            return;
+
+        GameOver = true;
+
+        Time.timeScale = 0f;
+
+        ShowGemSummary();
+        ShowGameOverReason(reason);
+
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(true);
+    }
+
+
+    void TriggerCaveIn()
+    {
+        TriggerGameOver(GameOverReason.CaveIn);
+
+    }
+
     void ShowGemSummary()
     {
         if (gemSummaryText == null)
@@ -75,6 +107,23 @@ public class CaveInManager : MonoBehaviour
         var summary = GemInventory.Instance.GetGemSummary();
 
         gemSummaryText.text = summary;
+    }
+
+    void ShowGameOverReason(GameOverReason reason)
+    {
+        if (gameOverReasonText == null)
+            return;
+
+        switch (reason)
+        {
+            case GameOverReason.CaveIn:
+                gameOverReasonText.text = "CAVE IN!";
+                break;
+
+            case GameOverReason.OutOfTools:
+                gameOverReasonText.text = "OUT OF TOOLS!";
+                break;
+        }
     }
 
     public void RestartGame()

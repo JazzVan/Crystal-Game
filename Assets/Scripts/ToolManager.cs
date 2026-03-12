@@ -42,7 +42,8 @@ public class ToolManager : MonoBehaviour
 
         if (AllToolsBroken())
         {
-            QuitGame();
+            CaveInManager.Instance.TriggerGameOver(GameOverReason.OutOfTools);
+
         }
     }
 

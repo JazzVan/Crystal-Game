@@ -10276,6 +10276,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingThreshold: 10
+  gameOverReasonText: {fileID: 1736535575}
   gameOverPanel: {fileID: 96874096}
   gemSummaryText: {fileID: 1277075316}
 --- !u!1839735485 &1054195857 stripped
