@@ -13,9 +13,15 @@ public class GemInventory : MonoBehaviour
     void Awake()
     {
         if (Instance == null)
+        {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
+            LoadInventory();
+        }
         else
+        {
             Destroy(gameObject);
+        }
     }
 
     public void AddGem(GemType type)
@@ -27,8 +33,11 @@ public class GemInventory : MonoBehaviour
 
         collectedGems[type]++;
 
+        SaveInventory();
+
         Debug.Log($"{type} collected. Total: {collectedGems[type]}");
     }
+
 
     public int GetGemCount(GemType type)
     {
@@ -58,4 +67,26 @@ public class GemInventory : MonoBehaviour
     {
         collectedGems.Clear();
     }
+
+    void SaveInventory()
+    {
+        foreach (var gem in collectedGems)
+        {
+            PlayerPrefs.SetInt(gem.Key.ToString(), gem.Value);
+        }
+
+        PlayerPrefs.Save();
+    }
+
+    void LoadInventory()
+    {
+        foreach (GemType type in System.Enum.GetValues(typeof(GemType)))
+        {
+            int count = PlayerPrefs.GetInt(type.ToString(), 0);
+
+            if (count > 0)
+                collectedGems[type] = count;
+        }
+    }
+
 }

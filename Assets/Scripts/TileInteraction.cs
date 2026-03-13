@@ -30,6 +30,9 @@ public class TileInteraction : MonoBehaviour
         if (CaveInManager.Instance != null && CaveInManager.Instance.GameOver)
             return;
 
+        if (InventoryUI.Instance != null && InventoryUI.Instance.IsOpen)
+            return;
+
         if (!Input.GetMouseButtonDown(0))
             return;
 
