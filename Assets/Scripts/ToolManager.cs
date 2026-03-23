@@ -7,6 +7,8 @@ public class ToolManager : MonoBehaviour
 
     public List<ToolData> tools = new List<ToolData>();
     public ToolType activeTool;
+    public List<ToolType> selectedTools = new List<ToolType>();
+    public int maxToolsPerRun = 4;
 
     void Awake()
     {
@@ -22,7 +24,8 @@ public class ToolManager : MonoBehaviour
     public bool CanUseActiveTool()
     {
         ToolData tool = tools.Find(t => t.toolType == activeTool);
-        return tool != null && !tool.isBroken;
+        return tool != null && !tool.isBroken && selectedTools.Contains(activeTool);
+
     }
 
     public void ConsumeActiveToolUse()
@@ -40,7 +43,7 @@ public class ToolManager : MonoBehaviour
             Debug.Log($"{activeTool} BROKEN");
         }
 
-        if (AllToolsBroken())
+        if (AllSelectedToolsBroken())
         {
             CaveInManager.Instance.TriggerGameOver(GameOverReason.OutOfTools);
 
@@ -56,25 +59,34 @@ public class ToolManager : MonoBehaviour
 
     public void SelectTool(ToolType type)
     {
+        if (!selectedTools.Contains(type))
+            return;
+
         if (!IsToolBroken(type))
             activeTool = type;
+
         Debug.Log("Tool Selected: " + type);
     }
+
 
     public ToolData GetToolData(ToolType type)
     {
         return tools.Find(t => t.toolType == type);
     }
 
-    bool AllToolsBroken()
+    bool AllSelectedToolsBroken()
     {
-        foreach (var tool in tools)
+        foreach (var toolType in selectedTools)
         {
-            if (!tool.isBroken)
+            var tool = GetToolData(toolType);
+
+            if (tool != null && !tool.isBroken)
                 return false;
         }
+
         return true;
     }
+
 
     void QuitGame()
     {
